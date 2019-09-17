@@ -1,8 +1,8 @@
 <template>
-    <div class="d-flex justify-content-center align-items-center autorize">
+    <div class="d-flex justify-content-center align-items-center autorize flex-column">
         <b-form-group 
             id="mainFieldset"
-            description="Введите авторизацонные данные."
+            description="Введите авторизационные данные."
             >
             <b-form-group
                 id="fieldset-1"
@@ -21,8 +21,8 @@
                 label-for="input-pwd">
                 <b-form-input id="input-pwd" v-model="password" type="password" trim></b-form-input>
             </b-form-group>
-            <b-button variant="success" @click="confirmUser">Подтвердить</b-button>
         </b-form-group>
+         <b-button variant="success" @click="confirmUser">Войти</b-button>
     </div>
 </template>
 
@@ -61,7 +61,23 @@ export default {
     },
     methods:{
         confirmUser(){
-            this.$router.push('/main')
+    //     fetch(`http://localhost:8080/auth`, 
+    //     {method: `POST`, 
+    //     headers: {
+    //         'Content-Type': 'application/json'
+    //         },
+    //     body:JSON.stringify({
+    //         login:'Skaledra',
+    //         password: 'sf4t5z2o'
+    //         })
+    //   })
+    //     .then((response) => {return response.json();})
+    //     .then((authData) => {
+    //         console.log((JSON.stringify(authData)))
+    //     }).catch((err) => {
+    //         console.log(err)
+    //     })
+            //this.$router.push('/main')
         }
     }
 }
