@@ -10,6 +10,8 @@ CREATE TABLE `testtask`.`users` (
   `position` TINYINT(1) NULL,
   PRIMARY KEY (`id`));
 
+ALTER TABLE `users` ADD UNIQUE (`login`);
+
 CREATE TABLE `testtask`.`tasks` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `title` VARCHAR(125) NOT NULL,
@@ -56,4 +58,22 @@ ADD CONSTRAINT `status_fk` FOREIGN KEY (`status`)
 REFERENCES `statuses`(`id`)
 ON UPDATE CASCADE
 ON DELETE RESTRICT;
+
+CREATE TABLE `testtask`.`relations` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `boss` INT NOT NULL,
+  `epml` INT NULL,
+  PRIMARY KEY (`id`));
+
+INSERT INTO `testtask`.`users` (`firstname`, `lastname`, `fathername`, `login`, `pwd`, `position`) VALUES ('Виктор', 'Конеефф', 'Александрович', 'v.koneeff', '4813494d137e1631bba301d5acab6e7bb7aa74ce1185d456565ef51d737677b2', '1');
+INSERT INTO `testtask`.`users` (`firstname`, `lastname`, `fathername`, `login`, `pwd`, `position`) VALUES ('Александр', 'Гаязов', 'Николаевич', 'a.gayazov', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', '0');
+INSERT INTO `testtask`.`users` (`firstname`, `lastname`, `fathername`, `login`, `pwd`, `position`) VALUES ('Степан', 'Самойлов', 'Константинович', 'a.samoilov', '8d23cf6c86e834a7aa6eded54c26ce2bb2e74903538c61bdd5d2197997ab2f72', '0');
+INSERT INTO `testtask`.`users` (`firstname`, `lastname`, `fathername`, `login`, `pwd`, `position`) VALUES ('Николай', 'Замякин', 'Евгеньевич', 'n.zamyakin', '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4', '0');
+INSERT INTO `testtask`.`users` (`firstname`, `lastname`, `fathername`, `login`, `pwd`, `position`) VALUES ('Виталий', 'Панов', 'Дмитриевич', 'v.panov', 'fe2592b42a727e977f055947385b709cc82b16b9a87f88c6abf3900d65d0cdc3', '0');
+
+INSERT INTO `testtask`.`relations` (`id`, `boss`, `epml`) VALUES ('', '11', '12');
+INSERT INTO `testtask`.`relations` (`boss`, `epml`) VALUES ('11', '13');
+INSERT INTO `testtask`.`relations` (`boss`, `epml`) VALUES ('11', '14');
+INSERT INTO `testtask`.`relations` (`boss`, `epml`) VALUES ('11', '15');
+
 

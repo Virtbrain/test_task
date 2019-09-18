@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router';
+// import store from './store.js'
 
 Vue.use(VueRouter);
 
@@ -19,11 +20,27 @@ let routes = [
   {
     name: 'main',
     path: '/main',
-    component: MainFrom
+    component: MainFrom,
+    // meta: {
+    //   requiresAuth: true
+    // }
   }
 ];
-
-export default new VueRouter({
+let router =  new VueRouter({
   mode: 'history',
   routes
-})
+});
+
+// router.beforeEach((to, from, next)=>{
+//   if(to.matched.some(record => record.meta.requiresAuth)) {
+//     if (!store.state.getAuthstate()){
+//       next('/authorization')
+//     } else {
+//       next()
+//     }
+//   } else {
+//     next()
+//   }
+// })
+
+export default router;
