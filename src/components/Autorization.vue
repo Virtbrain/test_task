@@ -1,12 +1,7 @@
 <template>
     <div class="d-flex justify-content-center align-items-center autorize flex-column">
-        <!-- <div v-if="error" class="error">
-            {{error}}
-        </div> -->
         <b-form-group 
-            id="mainFieldset"
-            description="Введите авторизационные данные."
-            >
+            id="mainFieldset">
             <b-form-group
                 id="fieldset-1"
                 label="Логин"
@@ -24,6 +19,9 @@
                 label-for="input-pwd">
                 <b-form-input id="input-pwd" type="password" @update="onPwdInput($event)" trim></b-form-input>
             </b-form-group>
+            <div v-if="this.$store.state.auth.autorized.status == `error`" class="text-danger">
+                Ошибка: {{this.$store.state.auth.autorized.reason}}
+            </div>
         </b-form-group>
          <b-button variant="success" @click="logIn">Войти</b-button>
     </div>
@@ -43,7 +41,7 @@ import { BButton } from 'bootstrap-vue'
 import { BCard } from 'bootstrap-vue'
 import { sha256 } from 'js-sha256';
 
-import {mapGetters, mapMutations} from 'vuex';
+import {mapGetters, mapMutations, mapState} from 'vuex';
 export default {
     components:{
         BFormGroup,
@@ -67,7 +65,8 @@ export default {
             this.setPassword(e)
         },
         logIn(){
-             this.$store.dispatch('fetchAuthData')
+            //console.log(this.getAuthstate.reason)
+            this.$store.dispatch('fetchAuthData')
         }
     }
 }

@@ -10,9 +10,11 @@ export default new Vuex.Store({
     auth:{
       login: '',
       password: '',
-      error: '',
-      autorized:{value: false, reason: ''}
-    }
+      autorized:{status: 'pending', reason: ''}
+    },
+    user: {},
+    tasks: []
+
   },
   getters:{
     getLogin(state){
@@ -23,6 +25,9 @@ export default new Vuex.Store({
     },
     getAuthstate(state){
       return state.auth.autorized
+    },
+    getUser(state){
+      return state.user
     }
   },
   mutations: {
@@ -36,15 +41,18 @@ export default new Vuex.Store({
       state.auth.error = val
     },
     setAuthorized(state,val){
-      state.auth.autorized.value = val.result
+      state.auth.autorized.status = val.status
       state.auth.autorized.reason = val.reason
+    },
+    setUser(state, val){
+      state.user = val
     }
 
   },
   actions: {
     fetchAuthData: async function(store){
       return new Promise(async function(resolve, reject){
-        await fetch(`http://localhost:8080/auth`, 
+        await fetch(`http://localhost:8085/auth`, 
         {method: `POST`, 
         headers:{'Content-Type': 'application/json'},
         body:JSON.stringify({
@@ -58,13 +66,24 @@ export default new Vuex.Store({
             console.log(err)
         })
       }).then(fres => {
-        if (fres.result){
-          store.commit('setAuthorized', fres)
+        if (fres.status == 'success'){
+          store.commit('setUser', fres.user)
           router.push('/main');
+        } else {
+          store.commit('setAuthorized', fres)
         }
       })
       
     },
+    fetchUserList: async function(store){
+
+    },
+    fetchTaskList: async function(store){
+
+    },
+    fetchNewTask: async function(store){
+
+    }
   },
   strict: process.env.NODE_ENV !== 'production'
 });

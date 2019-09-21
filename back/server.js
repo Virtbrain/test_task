@@ -20,7 +20,7 @@ connection.connect(err=>{
 });
 
 const app = express();
-const port = 8080;
+const port = 8085;
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -28,16 +28,17 @@ app.use(express.static(
     path.resolve(__dirname, `public`)
 ))
 
-app.post('/auth', async (req, res) => {
+app.post('/auth', (req, res) => {
     const {login, password} = req.body;
     //console.log(login + ' ' + password)
-    findUser(login).then((result) => {
-       if (!result){
-        res.json({result: false, reason: 'Пользователь не существует'})
-       } else if(result.pwd != password) {
-           res.json({result: false, reason: 'Неверный пароль'})
+    findUser(login).then((user) => {
+       if (!user){
+        res.json({status: 'error', reason: 'Пользователь не существует'})
+       } else if(user.pwd != password) {
+           res.json({status: 'error', reason: 'Неверный пароль'})
        } else {
-           res.json({result: true, reason: ''})
+           console.log(user)
+           res.json({status: 'success', reason: '', user: user})
        }
     })
     //connection.end();Note: If you're serving web requests, 
@@ -55,6 +56,19 @@ function findUser(login){
             if (error) reject(error)
             //console.log(results[0])
             resolve(results[0]);
+        })
+    })
+}
+
+function getTasks(id,type){
+    return new Promise((resolve, reject)=>{
+        connection.query({
+            sql: 'SELECT `tasks`.`title`,`tasks`.`description`,`tasks`.`date_end`,`users`.`firstname`,`users`.`lastname`,`statuses`.`stat_name` FROM `tasks` LEFT OUTER JOIN `users` ON `tasks`.`performer` = `users`.`id` LEFT OUTER JOIN `statuses` ON `tasks`.`status` = `statuses`.`id` WHERE `tasks`.`creator` = ?',
+            timeout: 4000,
+            values: [id]
+        }, function(error,results,fields){
+            if (error) reject(error)
+            resolve(results)
         })
     })
 }
