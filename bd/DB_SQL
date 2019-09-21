@@ -77,3 +77,23 @@ INSERT INTO `testtask`.`relations` (`boss`, `epml`) VALUES ('11', '14');
 INSERT INTO `testtask`.`relations` (`boss`, `epml`) VALUES ('11', '15');
 
 
+SELECT
+	`tasks`.`title`,
+    `tasks`.`description`,
+    `tasks`.`date_end`,
+    `users`.`firstname`,
+    `users`.`lastname`,
+    `statuses`.`stat_name`
+FROM `tasks`
+LEFT OUTER JOIN `users` ON
+	`tasks`.`performer` = `users`.`id`
+LEFT OUTER JOIN `statuses` ON
+	`tasks`.`status` = `statuses`.`id`
+WHERE `tasks`.`creator` = 11
+
+SELECT * FROM `users`
+LEFT OUTER JOIN `relations` ON 
+	`relations`.`boss` = 16
+WHERE `users`.`id` = `relations`.`epml`;
+
+

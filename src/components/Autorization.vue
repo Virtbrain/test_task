@@ -38,8 +38,7 @@ import BootstrapVue from 'bootstrap-vue'
 import { BFormGroup } from 'bootstrap-vue'
 import { BFormInput } from 'bootstrap-vue'
 import { BButton } from 'bootstrap-vue'
-import { BCard } from 'bootstrap-vue'
-import { sha256 } from 'js-sha256';
+import { BCard } from 'bootstrap-vue';
 
 import {mapGetters, mapMutations, mapState} from 'vuex';
 export default {
