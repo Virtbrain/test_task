@@ -21,26 +21,11 @@ let routes = [
     name: 'main',
     path: '/main',
     component: MainFrom,
-    // meta: {
-    //   requiresAuth: true
-    // }
   }
 ];
 let router =  new VueRouter({
   mode: 'history',
   routes
 });
-
-// router.beforeEach((to, from, next)=>{
-//   if(to.matched.some(record => record.meta.requiresAuth)) {
-//     if (!store.state.getAuthstate()){
-//       next('/authorization')
-//     } else {
-//       next()
-//     }
-//   } else {
-//     next()
-//   }
-// })
 
 export default router;

@@ -14,6 +14,7 @@ export default new Vuex.Store({
     },
     user: {},
     empls:[],
+    boss:[],
     prioritys:[],
     statuses:[],
     tasks: []
@@ -46,6 +47,9 @@ export default new Vuex.Store({
     },
     getTasks(state){
       return state.tasks
+    },
+    getBoss(state){
+      return state.boss
     }
   },
   mutations: {
@@ -73,9 +77,31 @@ export default new Vuex.Store({
     },
     setEmpls(state, val){
       state.empls = val
+      state.empls.push({id: state.user.id, fathername: state.user.fathername, firstname: state.user.firstname, lastname: state.user.lastname})
     },
     setTasks(state,val){
+      //console.log(val)
+      val.forEach(item=>{
+        let day = item.date_st.slice(8,10)
+        let dayint = Number(day)+1
+        item.date_st = item.date_st.slice(0,8);
+        item.date_st = item.date_st + dayint;
+
+        day = item.date_up.slice(8,10)
+        dayint = Number(day)+1
+        item.date_up = item.date_up.slice(0,8);
+        item.date_up = item.date_up + dayint;
+
+        day = item.date_end.slice(8,10)
+        dayint = Number(day)+1
+        item.date_end = item.date_end.slice(0,8);
+        item.date_end = item.date_end + dayint;
+      })
       state.tasks = val
+    },
+    setBoss(state,val){
+      state.boss = val
+      state.boss.push({id: state.user.id, fathername: state.user.fathername, firstname: state.user.firstname, lastname: state.user.lastname})
     }
   },
   actions: {
@@ -153,6 +179,26 @@ export default new Vuex.Store({
         store.commit('setEmpls', empls)
       })
     },
+    fetchBoss: async function(store){
+      return new Promise(async function(resolve, reject){
+        await fetch('http://localhost:8085/boss',
+        {method: 'POST',
+        headers:{'Content-Type': 'application/json'},
+        body:JSON.stringify({
+          id: store.getters.getUser.id
+        })
+      })
+        .then((response)=>{
+          return response.json()
+        }).then((data)=>{
+          resolve(data)
+        }).catch((err)=>{
+          console.log(err)
+        })
+      }).then((boss)=>{
+        store.commit('setBoss', boss)
+      })
+    },
     fetchTaskList: async function(store,payload){
       return new Promise(async function(resolve, reject){
         await fetch(`http://localhost:8085/tasks`, 
@@ -175,6 +221,24 @@ export default new Vuex.Store({
     fetchNewTask: async function(store,payload){
       return new Promise(async function(resolve, reject){
         await fetch('http://localhost:8085/newt',
+        {method: `POST`, 
+        headers:{'Content-Type': 'application/json'},
+        body:JSON.stringify({
+          payload
+          })
+        }).then((response) => {return response.json()})
+          .then((status) => {
+            resolve(status)
+        }).catch((err) => {
+            console.log(err)
+        })
+      }).then(status => {
+        console.log(status.status)
+      })
+    },
+    fetchChangeTask: async function(store,payload){
+      return new Promise(async function(resolve, reject){
+        await fetch('http://localhost:8085/changet',
         {method: `POST`, 
         headers:{'Content-Type': 'application/json'},
         body:JSON.stringify({

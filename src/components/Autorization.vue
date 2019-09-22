@@ -64,7 +64,6 @@ export default {
             this.setPassword(e)
         },
         logIn(){
-            //console.log(this.getAuthstate.reason)
             this.$store.dispatch('fetchAuthData')
         }
     }
